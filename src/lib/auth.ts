@@ -197,10 +197,10 @@ This link will expire soon. If you didn't create an Okshor account, you can safe
                       word-break: break-all;
                     ">
                       <a
-                        href="${verificationUrl}"
+                        href="${url}"
                         style="color: #12544F;"
                       >
-                        ${verificationUrl}
+                        ${url}
                       </a>
                     </p>
 
@@ -252,4 +252,9 @@ This link will expire soon. If you didn't create an Okshor account, you can safe
     }
     },
   },
+   socialProviders: {
+        google: { 
+            clientId: process.env.GOOGLE_CLIENT_ID as string, 
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
+        }, 
 });
