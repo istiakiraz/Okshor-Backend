@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { postService } from "./posts.service";
+import { PostService } from "./posts.service";
+
 
 const createPost = async (req: Request, res: Response) => {
   try {
@@ -12,7 +13,7 @@ const createPost = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await postService.createPost(req.body, user.id as string);
+    const result = await PostService.createPost(req.body, user.id as string);
 
     res.status(201).json({
       success: true,
@@ -27,6 +28,20 @@ const createPost = async (req: Request, res: Response) => {
   }
 };
 
+const getAllPost = async (req: Request, res: Response) => {
+  try {
+    const result = await PostService.getAllPost();
+
+    res.status(200).json(result);
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 export const PostController = {
   createPost,
+  getAllPost
 };
