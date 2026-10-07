@@ -27,15 +27,30 @@ async function seedAdmin() {
 
     const signUpAdmin = await fetch(
       "http://localhost:3000/api/auth/sign-up/email",
+
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Origin: "http://localhost:4000",
         },
         body: JSON.stringify(adminData),
       },
     );
+
+    if (signUpAdmin.ok) {
+      await prisma.user.update({
+        where: {
+          email: adminData.email,
+        },
+        data: {
+          emailVerified: true,
+        },
+      });
+    }
   } catch (error) {
     console.log(error);
   }
 }
+
+seedAdmin();
