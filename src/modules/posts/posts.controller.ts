@@ -49,7 +49,7 @@ const getAllPost = async (req: Request, res: Response) => {
 
     const authorId = req.query.authorId as string | undefined;
 
-    const { limit, skip, sortBy, sortOrder } = paginationSortingHelper(
+    const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(
       req.query,
     );
 
@@ -59,7 +59,7 @@ const getAllPost = async (req: Request, res: Response) => {
       isFeatured,
       status,
       authorId,
-      // page,
+      page,
       limit,
       skip,
       sortBy,

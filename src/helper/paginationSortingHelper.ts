@@ -6,6 +6,7 @@ type IOptions = {
 };
 
 type IOptionsResult = {
+  page: number;
   limit: number;
   skip: number;
   sortBy: string;
@@ -20,10 +21,11 @@ const paginationSortingHelper = (options: IOptions): IOptionsResult => {
   const skip = (page - 1) * limit;
 
   //sorting
-  const sortBy: string = options.sortBy || "createAt";
+  const sortBy: string = options.sortBy || "createdAt";
   const sortOrder: string = options.sortOrder || "desc";
 
   return {
+    page,
     limit,
     skip,
     sortBy,
