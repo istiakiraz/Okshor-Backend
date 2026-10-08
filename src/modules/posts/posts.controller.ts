@@ -150,6 +150,7 @@ const deletePost = async (req: Request, res: Response) => {
     });
   }
 };
+
 const updatePost = async (req: Request, res: Response) => {
   try {
     const user = req?.user;
@@ -181,6 +182,26 @@ const updatePost = async (req: Request, res: Response) => {
   }
 };
 
+const getStats = async (req: Request, res: Response) => {
+  try {
+    const result = await PostService.getStats();
+
+    res.status(200).json({
+      success: true,
+      message: "Stats fetched successfully",
+      data: result,
+    });
+  } catch (err: any) {
+    console.log(err);
+
+    res.status(400).json({
+      success: false,
+      error: "Stats fetched failed",
+      details: err,
+    });
+  }
+};
+
 export const PostController = {
   createPost,
   getAllPost,
@@ -188,4 +209,5 @@ export const PostController = {
   getMyPost,
   updatePost,
   deletePost,
+  getStats,
 };
