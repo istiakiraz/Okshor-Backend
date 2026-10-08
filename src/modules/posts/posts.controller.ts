@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PostService } from "./posts.service";
 import { PostStatus } from "../../../generated/prisma/enums";
 import paginationSortingHelper from "../../helper/paginationSortingHelper";
+import { UserRole } from "../../middlewares/authMiddleware";
 
 const createPost = async (req: Request, res: Response) => {
   try {
@@ -98,7 +99,6 @@ const getMyPost = async (req: Request, res: Response) => {
   try {
     const user = req?.user;
 
-
     if (!user) {
       throw new Error("You are unauthorized!");
     }
@@ -107,11 +107,42 @@ const getMyPost = async (req: Request, res: Response) => {
 
     res.status(200).json(result);
   } catch (err: any) {
-    console.log(err)
+    console.log(err);
 
     res.status(500).json({
       success: false,
       error: "Post fetched failed",
+      details: err,
+    });
+  }
+};
+
+const updatePost = async (req: Request, res: Response) => {
+  try {
+    const user = req?.user;
+
+    if (!user) {
+      throw new Error("You are unauthorized!");
+    }
+
+    const { postId } = req.params;
+
+    const isAdmin = user.role === UserRole.ADMIN;
+
+    const result = await PostService.updatePost(
+      postId as string,
+      req.body,
+      user?.id as string,
+      isAdmin,
+    );
+
+    res.status(200).json(result);
+  } catch (err: any) {
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      error: "Post update failed",
       details: err,
     });
   }
@@ -122,4 +153,5 @@ export const PostController = {
   getAllPost,
   getPostById,
   getMyPost,
+  updatePost,
 };
