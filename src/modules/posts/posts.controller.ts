@@ -75,7 +75,7 @@ const getAllPost = async (req: Request, res: Response) => {
   }
 };
 
-const getPostById = async ( req: Request<{ id: string }>, res: Response) => {
+const getPostById = async (req: Request<{ id: string }>, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -94,8 +94,32 @@ const getPostById = async ( req: Request<{ id: string }>, res: Response) => {
   }
 };
 
+const getMyPost = async (req: Request, res: Response) => {
+  try {
+    const user = req?.user;
+
+
+    if (!user) {
+      throw new Error("You are unauthorized!");
+    }
+
+    const result = await PostService.getMyPost(user?.id as string);
+
+    res.status(200).json(result);
+  } catch (err: any) {
+    console.log(err)
+
+    res.status(500).json({
+      success: false,
+      error: "Post fetched failed",
+      details: err,
+    });
+  }
+};
+
 export const PostController = {
   createPost,
   getAllPost,
   getPostById,
+  getMyPost,
 };
